@@ -13,9 +13,9 @@ public class TestModel {
     private String name;
     private String description;
 
-    @OneToOne(mappedBy = "test", cascade=CascadeType.ALL)
+//    @OneToOne(mappedBy = "test", cascade=CascadeType.ALL)
 //    @JoinColumn(name = "id_test", referencedColumnName = "id")
-    private AppointmentModel appointment;
+//    private AppointmentModel appointment;
 
 
     public Long getTestId() {

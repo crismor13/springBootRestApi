@@ -20,12 +20,12 @@ public class AppointmentModel {
 
     @OneToOne()
     @JoinColumn(name = "testId", referencedColumnName = "testId")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+//    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
     private TestModel test;
 
     @ManyToOne
     @JoinColumn(name = "affiliateId", referencedColumnName = "affiliateId")
-    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+//    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
     private AffiliateModel affiliate;
 
 //    @OneToOne()

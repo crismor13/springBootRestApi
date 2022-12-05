@@ -5,8 +5,10 @@ import com.example.sophosApi.models.AffiliateModel;
 import com.example.sophosApi.models.AppointmentModel;
 import com.example.sophosApi.models.TestModel;
 import com.example.sophosApi.models.UsuarioModel;
+import com.example.sophosApi.services.AffiliateService;
 import com.example.sophosApi.services.AppointmentService;
 import com.example.sophosApi.services.AppointmentService;
+import com.example.sophosApi.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,12 @@ import java.util.Optional;
 public class AppointmentController {
     @Autowired
     AppointmentService appointmentService;
+
+//    @Autowired
+//    TestService testService;
+//
+//    @Autowired
+//    AffiliateService affiliateService;
 
     @GetMapping()
     public ArrayList<AppointmentModel> obtenerCita(){

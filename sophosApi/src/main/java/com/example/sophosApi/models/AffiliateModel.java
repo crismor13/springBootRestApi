@@ -16,9 +16,9 @@ public class AffiliateModel {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "affiliate",cascade=CascadeType.ALL)
-//    @JoinColumn(name = "id_affiliate", referencedColumnName = "id")
-    private List<AppointmentModel> appointments;
+//    @OneToMany(mappedBy = "affiliate",cascade=CascadeType.ALL)
+////    @JoinColumn(name = "id_affiliate", referencedColumnName = "id")
+//    private List<AppointmentModel> appointments;
 
     public Long getAffiliateId() {
         return affiliateId;
