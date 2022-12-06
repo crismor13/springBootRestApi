@@ -18,7 +18,7 @@ public class AppointmentModel {
     @JsonFormat(pattern = "HH-mm", shape = JsonFormat.Shape.STRING)
     private LocalTime hour;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "testId", referencedColumnName = "testId")
 //    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
     private TestModel test;

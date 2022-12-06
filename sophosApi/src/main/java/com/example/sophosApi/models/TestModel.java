@@ -2,6 +2,8 @@ package com.example.sophosApi.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "Test")
@@ -42,15 +44,17 @@ public class TestModel {
         this.description = description;
     }
 
-//    public TestModel(Long id, String name, String description) {
-//        this.id = id;
-//        this.name = name;
-//        this.description = description;
-//    }
-//
-    public TestModel(Long id) {
-        this.testId = id;
+    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
+    private List<AppointmentModel> appointments;
+    public TestModel(Long id, String name, String description) {
+        this.testId = testId;
+        this.name = name;
+        this.description = description;
     }
+
+//    public TestModel(Long id) {
+//        this.testId = id;
+//    }
 
     public TestModel(){
 

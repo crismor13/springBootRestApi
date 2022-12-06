@@ -16,9 +16,8 @@ public class AffiliateModel {
     @Column(unique = true, nullable = false)
     private String email;
 
-//    @OneToMany(mappedBy = "affiliate",cascade=CascadeType.ALL)
-////    @JoinColumn(name = "id_affiliate", referencedColumnName = "id")
-//    private List<AppointmentModel> appointments;
+    @OneToMany(mappedBy = "affiliate",cascade=CascadeType.ALL)
+    private List<AppointmentModel> appointments;
 
     public Long getAffiliateId() {
         return affiliateId;
@@ -52,17 +51,17 @@ public class AffiliateModel {
         this.email = email;
     }
 
-//    public AffiliateModel(Long id, String name, int age, String email) {
-//        this.id = id;
-//        this.name = name;
-//        this.age = age;
-//        this.email = email;
-//    }
-//
-    public AffiliateModel(Long id) {
-        this.affiliateId= id;
-
+    public AffiliateModel(Long id, String name, int age, String email) {
+        this.affiliateId = affiliateId;
+        this.name = name;
+        this.age = age;
+        this.email = email;
     }
+
+//    public AffiliateModel(Long id) {
+//        this.affiliateId= id;
+//
+//    }
     public AffiliateModel(){
 
     }

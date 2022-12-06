@@ -1,9 +1,7 @@
 package com.example.sophosApi.services;
 
 import com.example.sophosApi.models.AppointmentModel;
-import com.example.sophosApi.models.UsuarioModel;
 import com.example.sophosApi.repositories.AppointmentRepository;
-import com.example.sophosApi.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +27,10 @@ public class AppointmentService {
     }
 
     public ArrayList<AppointmentModel>  obtenerPorFecha(LocalDate date) {
-        return appointmentRepository.findByDate(date);
+        return appointmentRepository.findByDateOrderByAffiliate(date);
     }
     public ArrayList<AppointmentModel>  obtenerPorIdAfiliado(Long affiliateId) {
-        return appointmentRepository.findByAffiliate_affiliateId(affiliateId);
+        return appointmentRepository.findByAffiliate_AffiliateId(affiliateId);
     }
 
     public ArrayList<AppointmentModel>  obtenerPorIdTest(Long IdTest) {
@@ -42,6 +40,9 @@ public class AppointmentService {
 //        return appointmentRepository.findByPrioridad(prioridad);
 //    }
 
+//    public void eliminarAppointment(Long id) {
+//        appointmentRepository.deleteById(id);
+//    }
     public boolean eliminarAppointment(Long id) {
         try{
             appointmentRepository.deleteById(id);

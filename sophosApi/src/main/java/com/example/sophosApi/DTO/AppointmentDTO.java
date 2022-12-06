@@ -1,14 +1,9 @@
 package com.example.sophosApi.DTO;
 
-import com.example.sophosApi.models.AffiliateModel;
-import com.example.sophosApi.models.TestModel;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class AppointmentCreateDTO {
+public class AppointmentDTO {
 
     private Long appointmentId;
     private LocalDate date;
@@ -57,7 +52,7 @@ public class AppointmentCreateDTO {
     }
 
 
-    public AppointmentCreateDTO() {
+    public AppointmentDTO() {
 
     }
 }
