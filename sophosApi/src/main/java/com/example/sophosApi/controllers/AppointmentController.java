@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -25,11 +23,6 @@ public class AppointmentController {
     @Autowired
     AffiliateService affiliateService;
 
-//    @GetMapping()
-//    public ArrayList<AppointmentModel> obtenerCita(){
-//        return appointmentService.obtenerAppointments();
-//    }
-
     @GetMapping()
     public ResponseEntity<?> obtenerCitas(){
         if (appointmentService.obtenerAppointments().isEmpty()){
@@ -42,7 +35,7 @@ public class AppointmentController {
     @GetMapping(path= "/{id}")
     public ResponseEntity<?> obtenerCitasPorId(@PathVariable("id") Long id){
         if (appointmentService.obtenerPorId(id).isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }else{
             return  ResponseEntity.ok(appointmentService.obtenerPorId(id));
         }
@@ -51,7 +44,7 @@ public class AppointmentController {
     @GetMapping(path = "/filterByAffiliate/{id}")
     public ResponseEntity<?> obtenerCitasAfiliado(@PathVariable("id") Long id){
         if (appointmentService.obtenerPorIdAfiliado(id).isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }else{
             return  ResponseEntity.ok(appointmentService.obtenerPorIdAfiliado(id));
         }
@@ -75,41 +68,9 @@ public class AppointmentController {
         }
     }
 
-
-//    @PostMapping()
-//    public AppointmentModel guardarCita(@RequestBody AppointmentModel appointment){
-//        return this.appointmentService.guardarAppointment(appointment);
-//    }
-
-//    @PostMapping()
-//    public AppointmentModel guardarCita(@RequestBody AppointmentDTO appointmentDTO) throws Exception {
-//        AppointmentModel appointment = new AppointmentModel();
-//        appointment.setAppointmentId(appointmentDTO.getAppointmentId());
-//        appointment.setDate(appointmentDTO.getDate());
-//        appointment.setHour(appointmentDTO.getHour());
-//
-//        Long affiliateId = appointmentDTO.getAffiliate();
-//        Long testId = appointmentDTO.getTest();
-//
-//        if(affiliateService.obtenerPorId(affiliateId).isPresent()){
-//            appointment.setAffiliate(affiliateService.obtenerPorId(affiliateId).get());
-//        } else {
-//            throw new Exception("No existe el afiliado");
-//        }
-//
-//        if (testService.obtenerPorId(testId).isPresent()){
-//            appointment.setTest(testService.obtenerPorId(testId).get());
-//        }else {
-//            throw new Exception("No existe el test");
-//        }
-//
-//        return this.appointmentService.guardarAppointment(appointment);
-//    }
-
     @PostMapping()
     public ResponseEntity<?> guardarCita(@RequestBody AppointmentDTO appointmentDTO){
         AppointmentModel appointment = new AppointmentModel();
-        appointment.setAppointmentId(appointmentDTO.getAppointmentId());
         appointment.setDate(appointmentDTO.getDate());
         appointment.setHour(appointmentDTO.getHour());
 
@@ -128,50 +89,52 @@ public class AppointmentController {
             return  new ResponseEntity("Test does not exist",HttpStatus.NOT_FOUND);
         }
 
-        return  ResponseEntity.ok(appointmentService.guardarAppointment(appointment));
+        try{
+            AppointmentModel prueba = appointmentService.guardarAppointment(appointment);
+            return  new ResponseEntity(prueba,HttpStatus.CREATED);
+        } catch (Exception e){
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
 
     }
 
-//    @GetMapping( path = "/{id}")
-//    public Optional<AppointmentModel> obtenerAppointmentPorId(@PathVariable("id") Long id) {
-//        return this.appointmentService.obtenerPorId(id);
-//    }
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<?> actualizarCita(@PathVariable long id,@RequestBody AppointmentDTO appointmentDTO) {
 
-//    @GetMapping
-//    public ResponseEntity obtenerAppointmentPorId(@RequestParam Long id){
-//        try{
-//            AppointmentModel appointment = appointmentService.obtenerPorId(id).get();
-//            return ResponseEntity.ok(appointment);
-//        } catch (Exception e){
-//            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
+        Optional<AppointmentModel> oldAppointment = appointmentService.obtenerPorId(id);
+
+        if (oldAppointment.isEmpty()){
+            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }else{
+            oldAppointment.get().setDate(appointmentDTO.getDate());
+            oldAppointment.get().setHour(appointmentDTO.getHour());
+
+            Long affiliateId = appointmentDTO.getAffiliate();
+            Long testId = appointmentDTO.getTest();
+            if(affiliateService.obtenerPorId(affiliateId).isPresent()){
+                oldAppointment.get().setAffiliate(affiliateService.obtenerPorId(affiliateId).get());
+            } else {
+                return  new ResponseEntity("Affiliate does not exist",HttpStatus.NOT_FOUND);
+            }
+
+            if (testService.obtenerPorId(testId).isPresent()){
+                oldAppointment.get().setTest(testService.obtenerPorId(testId).get());
+            }else {
+                return  new ResponseEntity("Test does not exist",HttpStatus.NOT_FOUND);
+            }
 
 
+            try{
+                AppointmentModel prueba = appointmentService.guardarAppointment(oldAppointment.get());
+                return  new ResponseEntity(prueba,HttpStatus.CREATED);
+            } catch (Exception e){
+                return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
 
-//    @GetMapping(path = "affiliates/{id}")
-//    public ArrayList<AppointmentModel> obtenerAppointmentPorIdAfiliado(@PathVariable("id") Long affiliateId){
-//        return this.appointmentService.obtenerPorIdAfiliado(affiliateId);
-//    }
-//
-//    @GetMapping(path = "/tests/{id}")
-//    public ArrayList<AppointmentModel> obtenerAppointmentPorIdTest(@PathVariable("id") Long testId){
-//        return this.appointmentService.obtenerPorIdTest(testId);
-//    }
-//    @GetMapping(path = "/{date}")
-//    public ArrayList<AppointmentModel> obtenerPorDate(@PathVariable("date") LocalDate fecha){
-//        return this.appointmentService.obtenerPorFecha(fecha);
-//    }
+    }
 
-//    @GetMapping(path = "/{date}")
-//    public ResponseEntity obtenerAppointmentPorFecha(@PathVariable("date") LocalDate fecha){
-//        try{
-//            ArrayList<AppointmentModel> appointment = appointmentService.obtenerPorFecha(fecha);
-//            return ResponseEntity.ok(appointment);
-//        } catch (Exception e){
-//            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
 
     @DeleteMapping( path = "/{id}")
     public ResponseEntity eliminarPorId(@PathVariable("id") Long id){
@@ -182,15 +145,5 @@ public class AppointmentController {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
-
-//    @DeleteMapping(path = "/{id}")
-//    public ResponseEntity eliminarAppointmentPorId(@PathVariable("id")Long id){
-//        try{
-//            appointmentService.eliminarAppointment(id);
-//            return ResponseEntity.status(HttpStatus.OK);
-//        } catch (Exception e){
-//            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
 
 }
