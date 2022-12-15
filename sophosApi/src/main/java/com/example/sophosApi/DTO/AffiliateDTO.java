@@ -1,8 +1,13 @@
 package com.example.sophosApi.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AffiliateDTO {
+
+    @NotBlank(message = "Name is mandatory")
     private String name;
     private int age;
+    @NotBlank(message = "Email is mandatory")
     private String email;
 
     public String getName() {

@@ -1,13 +1,15 @@
-package com.example.sophosApi.controllers;
+package com.example.sophosApi.controllersIntegrationTests;
 
 import com.example.sophosApi.DTO.AppointmentDTO;
 import com.example.sophosApi.models.AppointmentModel;
-import com.example.sophosApi.services.AffiliateService;
-import com.example.sophosApi.services.AppointmentService;
-import com.example.sophosApi.services.TestService;
+import com.example.sophosApi.service.AffiliateService;
+import com.example.sophosApi.service.AppointmentService;
+import com.example.sophosApi.service.TestService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class AppointmentController {
     }
 
     @GetMapping(path = "/filterByAffiliate/{id}")
-    public ResponseEntity<?> obtenerCitasAfiliado(@PathVariable("id") Long id){
+    public ResponseEntity<?> obtenerCitasPorAfiliado(@PathVariable("id") Long id){
         if (appointmentService.obtenerPorIdAfiliado(id).isEmpty()){
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }else{
@@ -53,7 +55,7 @@ public class AppointmentController {
     @GetMapping(path = "/filterByDate/{date}")
     public ResponseEntity<?> obtenerCitasPorFecha(@PathVariable("date") LocalDate date){
         if (appointmentService.obtenerPorFecha(date).isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }else{
             return  ResponseEntity.ok(appointmentService.obtenerPorFecha(date));
         }
@@ -62,14 +64,18 @@ public class AppointmentController {
     @GetMapping(path = "/filterByTest/{id}")
     public ResponseEntity<?> obtenerCitasPorTest(@PathVariable("id") Long id){
         if (appointmentService.obtenerPorIdTest(id).isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }else{
             return  ResponseEntity.ok(appointmentService.obtenerPorIdTest(id));
         }
     }
 
     @PostMapping()
-    public ResponseEntity<?> guardarCita(@RequestBody AppointmentDTO appointmentDTO){
+    public ResponseEntity<?> guardarCita(@RequestBody @Valid AppointmentDTO appointmentDTO, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getFieldError().getDefaultMessage(),HttpStatus.NOT_FOUND);
+        }
         AppointmentModel appointment = new AppointmentModel();
         appointment.setDate(appointmentDTO.getDate());
         appointment.setHour(appointmentDTO.getHour());
@@ -100,13 +106,15 @@ public class AppointmentController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> actualizarCita(@PathVariable long id,@RequestBody AppointmentDTO appointmentDTO) {
+    public ResponseEntity<?> actualizarCita(@PathVariable long id, @RequestBody @Valid AppointmentDTO appointmentDTO, BindingResult bindingResult) {
 
         Optional<AppointmentModel> oldAppointment = appointmentService.obtenerPorId(id);
 
         if (oldAppointment.isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }else{
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getFieldError().getDefaultMessage(),HttpStatus.NOT_FOUND);
+        } else{
             oldAppointment.get().setDate(appointmentDTO.getDate());
             oldAppointment.get().setHour(appointmentDTO.getHour());
 
@@ -138,7 +146,7 @@ public class AppointmentController {
 
     @DeleteMapping( path = "/{id}")
     public ResponseEntity eliminarPorId(@PathVariable("id") Long id){
-        boolean ok = this.appointmentService.eliminarAppointment(id);
+        boolean ok = appointmentService.eliminarAppointment(id);
         if (ok){
             return new ResponseEntity(HttpStatus.OK);
         }else{

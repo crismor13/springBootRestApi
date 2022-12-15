@@ -1,37 +1,35 @@
-package com.example.sophosApi.services;
+package com.example.sophosApi.implementation;
 
 import com.example.sophosApi.models.TestModel;
-import com.example.sophosApi.models.UsuarioModel;
 import com.example.sophosApi.repositories.TestRepository;
-import com.example.sophosApi.repositories.UsuarioRepository;
+import com.example.sophosApi.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TestService {
+public class TestImp implements TestService {
     @Autowired
     TestRepository testRepository;
-    
-    public ArrayList<TestModel> obtenerTests(){
-        return (ArrayList<TestModel>) testRepository.findAll();
+    @Override
+    public List<TestModel> obtenerTests(){
+        return (List<TestModel>) testRepository.findAll();
     }
 
+    @Override
     public TestModel guardarTest(TestModel miTest){
         return testRepository.save(miTest);
     }
 
+    @Override
     public Optional<TestModel> obtenerPorId(Long id){
         return testRepository.findById(id);
     }
 
 
-//    public ArrayList<TestModel>  obtenerPorPrioridad(Integer prioridad) {
-//        return testRepository.findByPrioridad(prioridad);
-//    }
-
+    @Override
     public boolean eliminarTest(Long id) {
         try{
             testRepository.deleteById(id);

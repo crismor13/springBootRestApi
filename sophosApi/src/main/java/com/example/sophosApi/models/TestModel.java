@@ -1,6 +1,8 @@
 package com.example.sophosApi.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
@@ -12,13 +14,12 @@ public class TestModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long testId;
+
+    @NotBlank(message = "Name is mandatory")
     private String name;
+
+    @NotBlank(message = "Description is mandatory")
     private String description;
-
-//    @OneToOne(mappedBy = "test", cascade=CascadeType.ALL)
-//    @JoinColumn(name = "id_test", referencedColumnName = "id")
-//    private AppointmentModel appointment;
-
 
     public Long getTestId() {
         return testId;
@@ -46,15 +47,12 @@ public class TestModel {
 
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
     private List<AppointmentModel> appointments;
-    public TestModel(Long id, String name, String description) {
+    public TestModel(Long testId, @NotEmpty String name, @NotEmpty String description) {
         this.testId = testId;
         this.name = name;
         this.description = description;
     }
 
-//    public TestModel(Long id) {
-//        this.testId = id;
-//    }
 
     public TestModel(){
 

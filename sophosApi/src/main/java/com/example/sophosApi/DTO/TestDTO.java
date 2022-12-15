@@ -1,7 +1,11 @@
 package com.example.sophosApi.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class TestDTO {
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    @NotBlank(message = "Description is mandatory")
     private String description;
 
     public String getName() {

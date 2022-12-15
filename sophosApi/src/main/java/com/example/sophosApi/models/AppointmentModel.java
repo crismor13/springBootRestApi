@@ -2,6 +2,8 @@ package com.example.sophosApi.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,28 +15,24 @@ public class AppointmentModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long appointmentId;
+    @NotNull(message = "Date is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private LocalDate date;
-    @JsonFormat(pattern = "HH-mm", shape = JsonFormat.Shape.STRING)
+
+    @NotNull(message = "Hour is mandatory")
+    @JsonFormat(pattern = "HH:mm", shape = JsonFormat.Shape.STRING)
     private LocalTime hour;
 
     @ManyToOne()
     @JoinColumn(name = "testId", referencedColumnName = "testId")
-//    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+    @NotNull(message = "Test id is mandatory")
     private TestModel test;
 
     @ManyToOne
     @JoinColumn(name = "affiliateId", referencedColumnName = "affiliateId")
-//    @JsonFormat(shape = JsonFormat.Shape.NUMBER_INT)
+    @NotNull(message = "Affiliate id is mandatory")
     private AffiliateModel affiliate;
 
-//    @OneToOne()
-//    @JoinColumn(name = "test_id", referencedColumnName = "id")
-//    private TestModel prueba;
-
-//    @ManyToOne
-//    @JoinColumn(name = "affiliate_id", referencedColumnName = "id")
-//    private AffiliateModel affiliate;
 
     public Long getAppointmentId() {
         return appointmentId;

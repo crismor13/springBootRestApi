@@ -1,14 +1,21 @@
 package com.example.sophosApi.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class AppointmentDTO {
 
     private Long appointmentId;
+    @NotNull(message = "Date is mandatory")
     private LocalDate date;
+    @NotNull(message = "Hour is mandatory")
     private LocalTime hour;
+    @NotNull(message = "Test id is mandatory")
     private Long test;
+    @NotNull(message = "Affiliate id is mandatory")
     private Long affiliate;
 
     public Long getAppointmentId() {

@@ -1,10 +1,10 @@
-package com.example.sophosApi.controllers;
+package com.example.sophosApi.controllersIntegrationTests;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 import com.example.sophosApi.models.UsuarioModel;
-import com.example.sophosApi.services.UsuarioService;
+import com.example.sophosApi.implementation.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

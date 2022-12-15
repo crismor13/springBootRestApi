@@ -1,37 +1,33 @@
-package com.example.sophosApi.services;
+package com.example.sophosApi.implementation;
 
 import com.example.sophosApi.models.AffiliateModel;
-import com.example.sophosApi.models.UsuarioModel;
 import com.example.sophosApi.repositories.AffiliateRepository;
-import com.example.sophosApi.repositories.UsuarioRepository;
+import com.example.sophosApi.service.AffiliateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AffiliateService {
+public class AffiliateImp implements AffiliateService {
     @Autowired
     AffiliateRepository affiliateRepository;
-    
-    public ArrayList<AffiliateModel> obtenerAffiliates(){
-        return (ArrayList<AffiliateModel>) affiliateRepository.findAll();
-    }
 
+    @Override
+    public List<AffiliateModel> obtenerAffiliates(){
+        return (List<AffiliateModel>) affiliateRepository.findAll();
+    }
+    @Override
     public AffiliateModel guardarAffiliate(AffiliateModel affiliate){
         return affiliateRepository.save(affiliate);
     }
-
+    @Override
     public Optional<AffiliateModel> obtenerPorId(Long id){
         return affiliateRepository.findById(id);
     }
 
-
-//    public ArrayList<AffiliateModel>  obtenerPorPrioridad(Integer prioridad) {
-//        return affiliateRepository.findByPrioridad(prioridad);
-//    }
-
+    @Override
     public boolean eliminarAffiliate(Long id) {
         try{
             affiliateRepository.deleteById(id);

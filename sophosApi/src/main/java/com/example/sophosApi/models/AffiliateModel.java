@@ -1,6 +1,9 @@
 package com.example.sophosApi.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+
 
 import java.util.List;
 
@@ -11,13 +14,19 @@ public class AffiliateModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long affiliateId;
+
+//    @NotNull(message = "Name should not be null")
+    @NotBlank(message = "Name is mandatory")
     private String name;
     private int age;
+    @NotBlank(message = "Email is mandatory")
     @Column(unique = true, nullable = false)
     private String email;
 
     @OneToMany(mappedBy = "affiliate",cascade=CascadeType.ALL)
     private List<AppointmentModel> appointments;
+
+
 
     public Long getAffiliateId() {
         return affiliateId;
@@ -29,6 +38,17 @@ public class AffiliateModel {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "AffiliateModel{" +
+                "affiliateId=" + affiliateId +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", appointments=" + appointments +
+                '}';
     }
 
     public void setName(String name) {
@@ -51,7 +71,7 @@ public class AffiliateModel {
         this.email = email;
     }
 
-    public AffiliateModel(Long id, String name, int age, String email) {
+    public AffiliateModel(Long affiliateId, String name, int age, String email) {
         this.affiliateId = affiliateId;
         this.name = name;
         this.age = age;

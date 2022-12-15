@@ -1,10 +1,12 @@
-package com.example.sophosApi.controllers;
+package com.example.sophosApi.controllersIntegrationTests;
 import com.example.sophosApi.DTO.TestDTO;
 import com.example.sophosApi.models.TestModel;
-import com.example.sophosApi.services.TestService;
+import com.example.sophosApi.service.TestService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
@@ -25,7 +27,11 @@ public class TestController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> guardarTest(@RequestBody TestModel test){
+    public ResponseEntity<?> guardarTest(@RequestBody @Valid TestModel test, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getFieldError().getDefaultMessage(),HttpStatus.NOT_FOUND);
+        }
         try{
             TestModel prueba = testService.guardarTest(test);
             return  new ResponseEntity(prueba,HttpStatus.CREATED);
@@ -45,23 +51,25 @@ public class TestController {
 
 
     @DeleteMapping( path = "/{id}")
-    public String eliminarPorId(@PathVariable("id") Long id){
-        boolean ok = this.testService.eliminarTest(id);
+    public ResponseEntity eliminarPorId(@PathVariable("id") Long id){
+        boolean ok = testService.eliminarTest(id);
         if (ok){
-            return "Se eliminó el test con id " + id;
+            return new ResponseEntity(HttpStatus.OK);
         }else{
-            return "No pudo eliminar el test con id " + id;
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> actualizarTest(@PathVariable long id,@RequestBody TestDTO testDTO) {
+    public ResponseEntity<?> actualizarTest(@PathVariable long id, @RequestBody @Valid TestDTO testDTO, BindingResult bindingResult) {
 
         Optional<TestModel> oldTest = testService.obtenerPorId(id);
 
         if (oldTest.isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }else {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getFieldError().getDefaultMessage(),HttpStatus.NOT_FOUND);
+        } else {
             oldTest.get().setName(testDTO.getName());
             oldTest.get().setDescription(testDTO.getDescription());
         }
