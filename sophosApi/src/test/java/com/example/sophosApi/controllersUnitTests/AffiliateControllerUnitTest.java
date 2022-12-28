@@ -1,7 +1,7 @@
 package com.example.sophosApi.controllersUnitTests;
 
 import com.example.sophosApi.DTO.AffiliateDTO;
-import com.example.sophosApi.controllersIntegrationTests.AffiliateController;
+import com.example.sophosApi.controllers.AffiliateController;
 import com.example.sophosApi.models.AffiliateModel;
 import com.example.sophosApi.service.AffiliateService;
 import org.junit.jupiter.api.Assertions;
@@ -10,18 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.PropertyEditorRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
-import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;

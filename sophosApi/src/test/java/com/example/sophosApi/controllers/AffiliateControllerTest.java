@@ -1,4 +1,4 @@
-package com.example.sophosApi.controllersIntegrationTests;
+package com.example.sophosApi.controllers;
 
 import com.example.sophosApi.implementation.AffiliateImp;
 import com.example.sophosApi.models.AffiliateModel;

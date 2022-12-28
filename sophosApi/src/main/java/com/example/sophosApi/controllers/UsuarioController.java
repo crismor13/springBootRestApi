@@ -1,4 +1,4 @@
-package com.example.sophosApi.controllersIntegrationTests;
+package com.example.sophosApi.controllers;
 
 import java.util.ArrayList;
 import java.util.Optional;

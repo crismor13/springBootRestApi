@@ -1,11 +1,8 @@
 package com.example.sophosApi.controllersUnitTests;
 
 import com.example.sophosApi.DTO.TestDTO;
-import com.example.sophosApi.controllersIntegrationTests.AffiliateController;
-import com.example.sophosApi.controllersIntegrationTests.TestController;
-import com.example.sophosApi.models.AffiliateModel;
+import com.example.sophosApi.controllers.TestController;
 import com.example.sophosApi.models.TestModel;
-import com.example.sophosApi.service.AffiliateService;
 import com.example.sophosApi.service.TestService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

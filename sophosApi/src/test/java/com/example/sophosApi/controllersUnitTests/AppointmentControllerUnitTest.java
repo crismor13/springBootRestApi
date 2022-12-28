@@ -1,14 +1,13 @@
 package com.example.sophosApi.controllersUnitTests;
 
 import com.example.sophosApi.DTO.AppointmentDTO;
-import com.example.sophosApi.controllersIntegrationTests.AppointmentController;
+import com.example.sophosApi.controllers.AppointmentController;
 import com.example.sophosApi.models.AffiliateModel;
 import com.example.sophosApi.models.AppointmentModel;
 import com.example.sophosApi.models.TestModel;
 import com.example.sophosApi.service.AffiliateService;
 import com.example.sophosApi.service.AppointmentService;
 import com.example.sophosApi.service.TestService;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

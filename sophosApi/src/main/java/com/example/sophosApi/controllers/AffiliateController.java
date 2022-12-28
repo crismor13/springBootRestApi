@@ -1,4 +1,4 @@
-package com.example.sophosApi.controllersIntegrationTests;
+package com.example.sophosApi.controllers;
 
 import com.example.sophosApi.DTO.AffiliateDTO;
 import com.example.sophosApi.models.AffiliateModel;
@@ -29,6 +29,15 @@ public class AffiliateController {
         }
     }
 
+    @GetMapping(path= "/{id}")
+    public ResponseEntity<?> obtenerAffiliatePorId(@PathVariable("id") Long id){
+        if (affiliateService.obtenerPorId(id).isEmpty()){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }else{
+            return  ResponseEntity.ok(affiliateService.obtenerPorId(id));
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<?> guardarAffiliate(@RequestBody @Valid AffiliateModel affiliate, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
@@ -43,14 +52,6 @@ public class AffiliateController {
         }
     }
 
-    @GetMapping(path= "/{id}")
-    public ResponseEntity<?> obtenerAffiliatePorId(@PathVariable("id") Long id){
-        if (affiliateService.obtenerPorId(id).isEmpty()){
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }else{
-            return  ResponseEntity.ok(affiliateService.obtenerPorId(id));
-        }
-    }
 
 
     @DeleteMapping( path = "/{id}")

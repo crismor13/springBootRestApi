@@ -1,4 +1,4 @@
-package com.example.sophosApi.controllersIntegrationTests;
+package com.example.sophosApi.controllers;
 import com.example.sophosApi.DTO.TestDTO;
 import com.example.sophosApi.models.TestModel;
 import com.example.sophosApi.service.TestService;
